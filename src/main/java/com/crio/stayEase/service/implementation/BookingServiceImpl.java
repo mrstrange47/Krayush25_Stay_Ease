@@ -11,6 +11,7 @@ import com.crio.stayEase.repository.BookingRepository;
 import com.crio.stayEase.repository.HotelRepository;
 import com.crio.stayEase.repository.UserRepository;
 import com.crio.stayEase.service.BookingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
@@ -57,8 +59,8 @@ public class BookingServiceImpl implements BookingService {
         booking.setHotel(hotel);
         booking.setUser(user);
         bookingRepository.save(booking);
-
-        return "Room in" + hotel.getName() +" booked By CUSTOMER" + user.getFirstName() + " " + user.getLastName();
+        log.info("Room Booked");
+        return "Room in " + hotel.getName() +" booked By CUSTOMER " + user.getFirstName() + " " + user.getLastName();
     }
 
     @Override
@@ -83,7 +85,8 @@ public class BookingServiceImpl implements BookingService {
         hotel.setNumberOfAvailableRooms(hotel.getNumberOfAvailableRooms() + 1);
         hotelRepository.save(hotel);
 
-        return booking.getHotel().getName() +" Canceled By HOTEL MANAGER" + user.getFirstName() + " " + user.getLastName();
+        log.info("Delete Booking");
+        return booking.getHotel().getName() +" Canceled By HOTEL MANAGER " + user.getFirstName() + " " + user.getLastName();
     }
 
     @Bean
