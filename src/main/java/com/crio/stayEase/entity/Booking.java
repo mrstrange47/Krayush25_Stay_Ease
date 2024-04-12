@@ -18,9 +18,11 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @Column(nullable = false)
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
+    @Column(nullable = false)
     private Hotel hotel;
 }

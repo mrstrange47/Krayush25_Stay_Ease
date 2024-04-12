@@ -15,8 +15,12 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
     private String location;
     private String description;
+
+    @Column(nullable = false)
     private Integer numberOfAvailableRooms;
 }

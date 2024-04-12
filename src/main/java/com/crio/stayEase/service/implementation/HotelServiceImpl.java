@@ -24,7 +24,12 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Hotel addHotel(HotelRequest hotelRequest) {
-        Hotel hotel = null;
+        if(hotelRequest.getNumberOfAvailableRooms() == null){
+            hotelRequest.setNumberOfAvailableRooms(0);
+        }
+
+
+        Hotel hotel = new Hotel();
         hotel.setName(hotelRequest.getName());
         hotel.setLocation(hotelRequest.getLocation());
         hotel.setDescription(hotelRequest.getDescription());
