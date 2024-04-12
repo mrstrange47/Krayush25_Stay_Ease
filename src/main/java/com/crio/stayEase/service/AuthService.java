@@ -5,6 +5,7 @@ import com.crio.stayEase.dto.request.RegisterRequest;
 import com.crio.stayEase.dto.response.AuthResponse;
 import com.crio.stayEase.entity.User;
 import com.crio.stayEase.enums.Role;
+import com.crio.stayEase.exception.UsernameAlreadyExistException;
 import com.crio.stayEase.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,7 @@ public class AuthService {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) throws UsernameAlreadyExistException {
         if (request.getRole() == null) {
             request.setRole(Role.CUSTOMER);
         }
@@ -40,6 +41,10 @@ public class AuthService {
                 .role(request.getRole())
                 .build();
 
+        User existingUser = userRepository.findByEmail(request.getEmail());
+        if(existingUser != null){
+            throw new UsernameAlreadyExistException(request.getEmail() + " Already exists!");
+        }
         userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
