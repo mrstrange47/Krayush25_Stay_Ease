@@ -36,7 +36,7 @@ public class SecurityConfig {
         httpSecurity.authenticationProvider(authenticationProvider());
 
         httpSecurity.authorizeHttpRequests(configure -> configure
-                .requestMatchers("/users/login", "users/register")
+                .requestMatchers("/users/login", "/users/register", "/hotels")
                 .permitAll()
                 .anyRequest()
                 .authenticated());
