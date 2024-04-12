@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
         Hotel hotel = null;
         User user = getLoggedInUserDetails();
 
-        if(user.getId() == null){
+        if(user == null || user.getId() == null){
             throw new UserNotFoundException("User Not Found");
         }
 

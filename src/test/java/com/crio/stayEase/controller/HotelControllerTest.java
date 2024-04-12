@@ -1,4 +1,4 @@
-package com.crio.stayEase;
+package com.crio.stayEase.controller;
 
 import com.crio.stayEase.controller.BookingController;
 import com.crio.stayEase.controller.HotelController;
