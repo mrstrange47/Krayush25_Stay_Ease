@@ -5,6 +5,7 @@ import com.crio.stayEase.controller.HotelController;
 import com.crio.stayEase.entity.Booking;
 import com.crio.stayEase.entity.Hotel;
 import com.crio.stayEase.exception.HotelNotFoundException;
+import com.crio.stayEase.exception.InvalidNumberOfRoomException;
 import com.crio.stayEase.exception.RoomUnavailableException;
 import com.crio.stayEase.exception.UserNotFoundException;
 import com.crio.stayEase.service.BookingService;
@@ -42,9 +43,9 @@ public class HotelControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void createHotelTest(){
+    public void createHotelTest() throws InvalidNumberOfRoomException {
         Mockito.when(hotelService.addHotel(any())).thenReturn(new Hotel());
-        Hotel hotel = hotelController.createHotel(any());
+        ResponseEntity<Object> hotel = hotelController.createHotel(any());
         Assertions.assertNotNull(hotel);
     }
 

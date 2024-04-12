@@ -3,6 +3,7 @@ package com.crio.stayEase.service.implementation;
 import com.crio.stayEase.dto.request.HotelRequest;
 import com.crio.stayEase.entity.Hotel;
 import com.crio.stayEase.exception.HotelNotFoundException;
+import com.crio.stayEase.exception.InvalidNumberOfRoomException;
 import com.crio.stayEase.repository.HotelRepository;
 import com.crio.stayEase.service.HotelService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +26,21 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel addHotel(HotelRequest hotelRequest) {
+    public Hotel addHotel(HotelRequest hotelRequest) throws InvalidNumberOfRoomException {
         if(hotelRequest.getNumberOfAvailableRooms() == null){
             hotelRequest.setNumberOfAvailableRooms(0);
         }
 
+        if(hotelRequest.getNumberOfAvailableRooms() < 0){
+            throw new InvalidNumberOfRoomException("Number of Rooms can't be negative");
+        }
 
         Hotel hotel = new Hotel();
         hotel.setName(hotelRequest.getName());
         hotel.setLocation(hotelRequest.getLocation());
         hotel.setDescription(hotelRequest.getDescription());
         hotel.setNumberOfAvailableRooms(hotelRequest.getNumberOfAvailableRooms());
+        log.info("New Hotel added");
         return hotelRepository.save(hotel);
     }
 
@@ -44,6 +49,7 @@ public class HotelServiceImpl implements HotelService {
         Optional<Hotel> optionalHotel = hotelRepository.findById(hotelId);
         if (optionalHotel.isPresent()) {
             hotelRepository.deleteById(hotelId);
+            log.info("Hotel Deleted");
             return "Hotel with id " + hotelId + " has been deleted successfully.";
         }
         else{
@@ -52,7 +58,11 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel updateHotelById(Long hotelId, HotelRequest hotelRequest) throws HotelNotFoundException{
+    public Hotel updateHotelById(Long hotelId, HotelRequest hotelRequest) throws HotelNotFoundException, InvalidNumberOfRoomException {
+        if(hotelRequest.getNumberOfAvailableRooms() < 0){
+            throw new InvalidNumberOfRoomException("Number of Rooms can't be negative");
+        }
+
         Optional<Hotel> optionalHotel = hotelRepository.findById(hotelId);
         if (optionalHotel.isPresent()) {
             Hotel existingHotel = optionalHotel.get();
@@ -60,6 +70,7 @@ public class HotelServiceImpl implements HotelService {
             existingHotel.setLocation(hotelRequest.getLocation());
             existingHotel.setDescription(hotelRequest.getDescription());
             existingHotel.setNumberOfAvailableRooms(hotelRequest.getNumberOfAvailableRooms());
+            log.info("Hotel details updated");
             return hotelRepository.save(existingHotel);
         }
         else {
