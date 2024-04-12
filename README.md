@@ -3,6 +3,9 @@
 **PostMan Collection**
 [Stay Ease.postman_collection.json](https://github.com/mrstrange47/Krayush25_Stay_Ease/files/14963509/Stay.Ease.postman_collection.json)
 
+Render Deployment: https://krayush25-stay-ease.onrender.com
+MySql instance deployed on aiven.io
+
 
 **Problem Statement**
 
